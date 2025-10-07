@@ -39,7 +39,7 @@ registerBtn.addEventListener("click", async () => {
 
     // 🚀 Redirigir al dashboard
     setTimeout(() => {
-      window.location.href = "dashboard.html";
+      window.location.href = "html/dashboard.html";
     }, 1000);
 
   } catch (error) {
