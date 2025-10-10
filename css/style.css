@@ -334,6 +334,31 @@ input:focus {
   margin-bottom: 2rem;
 }
 
+/* Botón fijo superior izquierdo (usa las mismas clases .btn .outline para mantener estilo) */
+.top-left {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 120;
+  padding: 0.5rem 0.75rem; /* se mantiene coherente con .btn */
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+}
+
+/* Ajuste para pantallas pequeñas */
+@media (max-width: 420px) {
+  .top-left {
+    top: 10px;
+    left: 10px;
+    padding: 0.45rem 0.6rem;
+    font-size: 0.95rem;
+  }
+}
+
 @media (max-width: 640px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
