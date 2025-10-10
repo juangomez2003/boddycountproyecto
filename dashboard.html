@@ -2,19 +2,69 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Dashboard - Boddycount</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - BoddyCount</title>
+  <link rel="icon" type="image/png" href="images/logoboddy.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <div class="container">
-    <div class="card">
-      <h2>Panel de Control</h2>
-      <p id="welcome"></p>
-      <button id="logoutBtn" class="btn danger">Cerrar Sesión</button>
+<body class="dashboard-body">
+  <nav class="dashboard-nav">
+    <div class="nav-wrapper">
+      <img src="images/logoboddy.png" alt="BoddyCount" class="dashboard-logo">
+      <div class="nav-controls">
+        <span id="userName" class="user-name"></span>
+        <button id="logoutBtn" class="btn danger">Cerrar Sesión</button>
+      </div>
     </div>
+  </nav>
+
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <a href="#rutinas" class="nav-item active">
+          <i class="icon-workout"></i>Rutinas
+        </a>
+        <a href="#progress" class="nav-item">
+          <i class="icon-progress"></i>Progreso
+        </a>
+        <a href="#stats" class="nav-item">
+          <i class="icon-stats"></i>Estadísticas
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="quick-actions">
+        <button class="btn primary" id="newRoutineBtn">
+          <i class="icon-plus"></i>Nueva Rutina
+        </button>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="data-card">
+          <h3>Rutina Actual</h3>
+          <div class="routine-preview" id="currentRoutine">
+            <!-- Se llenará dinámicamente -->
+          </div>
+        </div>
+
+        <div class="data-card">
+          <h3>Progreso Semanal</h3>
+          <div class="progress-chart" id="weeklyProgress">
+            <!-- Gráfico de progreso -->
+          </div>
+        </div>
+
+        <div class="data-card">
+          <h3>Próximo Entrenamiento</h3>
+          <div class="next-workout" id="nextWorkout">
+            <!-- Detalles del próximo entrenamiento -->
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
 
-  <!-- Importar lógica del dashboard -->
   <script type="module" src="js/dashboard.js"></script>
 </body>
 </html>

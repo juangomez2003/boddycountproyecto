@@ -1,50 +1,129 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BoddyCount | Supera tus límites</title>
-  <link rel="stylesheet" href="css/estilohome.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BoddyCount | Supera tus límites</title>
+    <!-- Agregar favicon -->
+    <link rel="icon" type="image/png" href="images/logoboddy.png">
+    <meta name="description" content="Registra tus entrenamientos, fija metas y mejora tu bienestar con BoddyCount.">
+    <meta property="og:title" content="BoddyCount | Supera tus límites">
+    <meta property="og:description" content="Registra tus entrenamientos y alcanza tus metas con BoddyCount.">
+    <meta property="og:type" content="website">
+    <link rel="stylesheet" href="css/estilohome.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Header -->
-  <header class="navbar">
-    <div class="logo">BoddyCount</div>
-    <nav>
-      <button id="loginBtn" class="btn-ingresar" onclick="location.href='index.html'">Ingresar</button>
-    </nav>
+  <header class="navbar" role="banner">
+    <div class="container header-inner">
+      <a class="logo" href="home.html" aria-label="BoddyCount - inicio">BoddyCount</a>
+
+      <button id="navToggle" class="nav-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="Abrir menú">
+        <span class="hamburger"></span>
+      </button>
+
+      <nav id="mainNav" class="nav" role="navigation" aria-label="Menú principal">
+        <ul class="nav-list">
+          <li><a href="home.html">Inicio</a></li>
+          <li><a href="#features">Características</a></li>
+          <li><a href="#about">Cómo funciona</a></li>
+          <li><a href="#contact">Contacto</a></li>
+          <li><a class="btn-ingresar" href="index.html">Ingresar</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <!-- Main Content -->
+  <!-- Hero -->
   <main>
-    <!-- Carousel Section -->
-    <section class="carousel">
-      <h2 class="slide-up">Explora tus herramientas</h2>
-      <div class="carousel-container">
-        <div class="carousel-item zoom-in">
-          <img src="https://cdn-icons-png.flaticon.com/512/1048/1048943.png" alt="Seguimiento físico">
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-content">
+              
+                <h1>Supera tus límites con BoddyCount</h1>
+                <p>Registra tus entrenamientos, fija metas y mejora tu rendimiento con estadísticas claras y fáciles de interpretar.</p>
+                <div class="hero-ctas">
+                    <a href="index.html" class="btn primary">Comenzar ahora</a>
+                    <a href="#features" class="btn outline">Conoce más</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="images/logoboddy.png" alt="BoddyCount Hero" />
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features container" aria-labelledby="features-title">
+      <h2 id="features-title">Explora tus herramientas</h2>
+      <div class="features-grid" role="list">
+        <article class="feature" role="listitem">
+          <img src="https://cdn-icons-png.flaticon.com/512/1048/1048943.png" alt="Icono de seguimiento físico" loading="lazy" width="96" height="96">
           <h3>Seguimiento físico</h3>
-          <p>Registra tus entrenamientos y analiza tus resultados en tiempo real.</p>
-        </div>
-        <div class="carousel-item zoom-in delay-1">
-          <img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" alt="Metas personales">
+          <p>Registra entrenamientos y analiza tu progreso con gráficos y estadísticas.</p>
+        </article>
+
+        <article class="feature" role="listitem">
+          <img src="https://cdn-icons-png.flaticon.com/512/3062/3062634.png" alt="Icono de metas personales" loading="lazy" width="96" height="96">
           <h3>Metas personales</h3>
-          <p>Define tus objetivos y observa cómo los alcanzas paso a paso.</p>
-        </div>
-        <div class="carousel-item zoom-in delay-2">
-          <img src="https://cdn-icons-png.flaticon.com/512/3022/3022553.png" alt="Bienestar integral">
+          <p>Define objetivos y recibe avisos de progreso para mantener la motivación.</p>
+        </article>
+
+        <article class="feature" role="listitem">
+          <img src="https://cdn-icons-png.flaticon.com/512/3022/3022553.png" alt="Icono de bienestar integral" loading="lazy" width="96" height="96">
           <h3>Bienestar integral</h3>
-          <p>Combina entrenamiento, descanso y nutrición para un mejor rendimiento.</p>
-        </div>
+          <p>Combina entrenamiento, descanso y nutrición para mejorar tu rendimiento.</p>
+        </article>
       </div>
+    </section>
+
+    <!-- About / How it works -->
+    <section id="about" class="about container">
+      <h2>Cómo funciona</h2>
+      <p>Conecta tus entrenamientos, registra series y repeticiones, y deja que BoddyCount calcule tus métricas automáticamente. Accede desde cualquier dispositivo.</p>
+    </section>
+
+    <!-- Contact / CTA -->
+    <section id="contact" class="contact container">
+      <h2>¿Tienes dudas?</h2>
+      <p>Escríbenos y te ayudamos a empezar.</p>
+      <a class="btn" href="mailto:soporte@boddycount.example">Contactar soporte</a>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer>
-    <p>© 2025 BoddyCount. Todos los derechos reservados.</p>
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-grid">
+      <p>© 2025 BoddyCount. Todos los derechos reservados.</p>
+      <nav aria-label="Enlaces de pie de página">
+        <a href="privacy.html">Política de privacidad</a>
+        <a href="terms.html">Términos</a>
+      </nav>
+    </div>
   </footer>
+
+  <script>
+    // Menú móvil accesible: abre/cierra y actualiza aria-expanded
+    (function () {
+      const navToggle = document.getElementById('navToggle');
+      const mainNav = document.getElementById('mainNav');
+
+      navToggle.addEventListener('click', () => {
+        const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+        navToggle.setAttribute('aria-expanded', String(!expanded));
+        mainNav.classList.toggle('open');
+      });
+
+      // Cerrar menú al hacer clic fuera (mejora UX)
+      document.addEventListener('click', (e) => {
+        if (!mainNav.contains(e.target) && !navToggle.contains(e.target) && mainNav.classList.contains('open')) {
+          mainNav.classList.remove('open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+  </script>
 
   <script src="js/scripthome.js"></script>
 </body>

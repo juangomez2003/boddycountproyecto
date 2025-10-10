@@ -26,12 +26,12 @@ onAuthStateChanged(auth, (user) => {
     welcome.textContent = `Bienvenido, ${user.email} 🎉`;
   } else {
     // Si no hay usuario logueado, redirigir al login
-    window.location.href = "html/index.html";
+    window.location.href = "index.html";
   }
 });
 
 // Cerrar sesión
 logoutBtn.addEventListener("click", async () => {
   await signOut(auth);
-  window.location.href = "html/index.html";
+  window.location.href = "index.html";
 });
