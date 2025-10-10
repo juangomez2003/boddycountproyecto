@@ -340,13 +340,31 @@ input:focus {
   top: 16px;
   left: 16px;
   z-index: 120;
-  padding: 0.5rem 0.75rem; /* se mantiene coherente con .btn */
+  padding: 0.5rem 0.75rem;
   border-radius: 8px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(6px);
+
+  /* Estilo específico: fondo naranja y texto blanco */
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 6px 16px rgba(255,120,52,0.12);
+}
+
+/* Hover / focus */
+.top-left:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(248,95,21,0.12);
+}
+
+.top-left:focus {
+  outline: 3px solid rgba(255,120,52,0.18);
+  outline-offset: 2px;
 }
 
 /* Ajuste para pantallas pequeñas */
