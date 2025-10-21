@@ -1,70 +1,382 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - BoddyCount</title>
-  <link rel="icon" type="image/png" href="images/logoboddy.png">
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body class="dashboard-body">
-  <nav class="dashboard-nav">
-    <div class="nav-wrapper">
-      <img src="images/logoboddy.png" alt="BoddyCount" class="dashboard-logo">
-      <div class="nav-controls">
-        <span id="userName" class="user-name"></span>
-        <button id="logoutBtn" class="btn danger">Cerrar Sesión</button>
-      </div>
-    </div>
-  </nav>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BoddyCount Dashboard</title>
+     <link rel="stylesheet" href="css/dashboard.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+</head>
+<body>
   <div class="dashboard-container">
+    <!-- Sidebar -->
     <aside class="sidebar">
-      <nav class="sidebar-nav">
-        <a href="#rutinas" class="nav-item active">
-          <i class="icon-workout"></i>Rutinas
-        </a>
-        <a href="#progress" class="nav-item">
-          <i class="icon-progress"></i>Progreso
-        </a>
-        <a href="#stats" class="nav-item">
-          <i class="icon-stats"></i>Estadísticas
-        </a>
+      <h2 class="logo">💥 BoddyCount</h2>
+      <nav>
+        <button class="nav-btn active" data-section="home">🏠 Inicio</button>
+        <button class="nav-btn" data-section="routines">💪 Rutinas</button>
+        <button class="nav-btn" data-section="bmi">⚖️ IMC</button>
       </nav>
+      <a href="home.html" class="exit-btn">
+        🚪 Salir
+      </a>
     </aside>
 
-    <main class="main-content">
-      <div class="quick-actions">
-        <button class="btn primary" id="newRoutineBtn">
-          <i class="icon-plus"></i>Nueva Rutina
-        </button>
-      </div>
-
-      <div class="dashboard-grid">
-        <div class="data-card">
-          <h3>Rutina Actual</h3>
-          <div class="routine-preview" id="currentRoutine">
-            <!-- Se llenará dinámicamente -->
-          </div>
+    <!-- Main Content -->
+    <main class="content">
+      <!-- Inicio -->
+      <section id="home" class="active">
+        <h1>¡Bienvenido a <span class="highlight">BoddyCount</span>!</h1>
+        <p>Descubre las rutinas más efectivas basadas en ciencia y en los mejores culturistas del mundo. Transforma tu cuerpo con entrenamientos profesionales diseñados para cada nivel. ⚡</p>
+        <div class="quick-access">
+          <button data-section="routines">🏋️ Explorar Rutinas</button>
+          <button data-section="bmi">⚖️ Calcular IMC</button>
         </div>
+      </section>
 
-        <div class="data-card">
-          <h3>Progreso Semanal</h3>
-          <div class="progress-chart" id="weeklyProgress">
-            <!-- Gráfico de progreso -->
-          </div>
+      <!-- Rutinas -->
+      <section id="routines">
+        <h2>🏋️ <span class="highlight">Rutinas por Nivel</span></h2>
+        <div class="filters">
+          <select id="filterLevel">
+            <option value="todos">Todos los niveles</option>
+            <option value="principiante">Principiante</option>
+            <option value="intermedio">Intermedio</option>
+            <option value="avanzado">Avanzado</option>
+          </select>
         </div>
+        <div id="routineList" class="routine-list"></div>
 
-        <div class="data-card">
-          <h3>Próximo Entrenamiento</h3>
-          <div class="next-workout" id="nextWorkout">
-            <!-- Detalles del próximo entrenamiento -->
-          </div>
+        <!-- Detalle -->
+        <div id="routineDetails" class="routine-details hidden">
+          <button id="backToRoutines" class="back-btn">⬅ Volver a Rutinas</button>
+          <div id="routineContent"></div>
         </div>
-      </div>
+      </section>
+
+      <!-- IMC -->
+      <section id="bmi">
+        <h2>⚖️ <span class="highlight">Calculadora de IMC</span></h2>
+        <div class="bmi-form">
+          <input type="number" id="weight" placeholder="Peso (kg)" min="1" step="0.1" />
+          <input type="number" id="height" placeholder="Altura (cm)" min="1" step="0.1" />
+          <button id="calcBmi">Calcular IMC</button>
+        </div>
+        <div id="bmiResult" class="hidden"></div>
+      </section>
     </main>
   </div>
 
-  <script type="module" src="js/dashboard.js"></script>
+  <!-- Botón flotante del temporizador -->
+  <div class="floating-timer" id="floatingTimer">
+    ⏱️ <span id="timerDisplay">00:00</span>
+    <div class="timer-controls">
+      <button id="startTimer" title="Iniciar">▶️</button>
+      <button id="pauseTimer" title="Pausar">⏸️</button>
+      <button id="resetTimer" title="Reiniciar">🔄</button>
+    </div>
+  </div>
+
+  <script>
+    // Base de datos de rutinas
+    const routines = [
+      {
+        id: 1,
+        name: "Full Body Principiante",
+        level: "principiante",
+        duration: "45 min",
+        description: "Rutina completa para empezar tu transformación. Trabaja todo el cuerpo 3 veces por semana.",
+        exercises: [
+          { name: "Sentadillas", sets: "3x12", desc: "Posición de pies al ancho de hombros, baja hasta 90 grados" },
+          { name: "Press de banca con mancuernas", sets: "3x10", desc: "Mantén los codos a 45 grados del cuerpo" },
+          { name: "Remo con mancuernas", sets: "3x12", desc: "Espalda recta, tira hacia la cadera" },
+          { name: "Press militar", sets: "3x10", desc: "Empuja las mancuernas verticalmente" },
+          { name: "Curl de bíceps", sets: "3x12", desc: "Movimiento controlado, sin balanceo" },
+          { name: "Plancha", sets: "3x30seg", desc: "Mantén el core activado" }
+        ],
+        tips: "Descansa 60-90 segundos entre series. Enfócate en la técnica antes que en el peso."
+      },
+      {
+        id: 2,
+        name: "Push Pull Legs",
+        level: "intermedio",
+        duration: "60 min",
+        description: "División clásica para construir músculo eficientemente. 6 días de entrenamiento.",
+        exercises: [
+          { name: "Press de banca", sets: "4x8-10", desc: "Ejercicio principal de empuje" },
+          { name: "Press inclinado", sets: "3x10-12", desc: "Enfoca pecho superior" },
+          { name: "Fondos en paralelas", sets: "3x10-12", desc: "Hasta fallo muscular" },
+          { name: "Extensiones de tríceps", sets: "3x12-15", desc: "Aislamiento de tríceps" },
+          { name: "Elevaciones laterales", sets: "4x12-15", desc: "Deltoides medios" }
+        ],
+        tips: "Aumenta el peso progresivamente cada semana. Mantén la intensidad alta."
+      },
+      {
+        id: 3,
+        name: "Hipertrofia Avanzada",
+        level: "avanzado",
+        duration: "75 min",
+        description: "Programa intensivo para máximo crecimiento muscular. Volumen alto con técnicas avanzadas.",
+        exercises: [
+          { name: "Sentadillas profundas", sets: "5x5", desc: "Peso máximo, máxima profundidad" },
+          { name: "Peso muerto", sets: "4x6", desc: "Mantén espalda neutral" },
+          { name: "Prensa de piernas", sets: "4x12", desc: "Drop sets en la última serie" },
+          { name: "Zancadas búlgaras", sets: "3x10", desc: "Por pierna, con mancuernas" },
+          { name: "Curl femoral", sets: "4x12-15", desc: "Contracción máxima" },
+          { name: "Extensiones de cuádriceps", sets: "3x15", desc: "Superset con sentadillas" }
+        ],
+        tips: "Aplica técnicas de intensidad: drop sets, rest-pause, y superseries. Nutrición y descanso son cruciales."
+      },
+      {
+        id: 4,
+        name: "Upper Lower Split",
+        level: "intermedio",
+        duration: "55 min",
+        description: "Divide tu entrenamiento en tren superior e inferior. 4 días por semana.",
+        exercises: [
+          { name: "Dominadas", sets: "4x8-10", desc: "Agarre amplio" },
+          { name: "Press de banca", sets: "4x8-10", desc: "Peso moderado-alto" },
+          { name: "Remo con barra", sets: "4x10", desc: "Mantén core estable" },
+          { name: "Press militar", sets: "3x10-12", desc: "De pie o sentado" },
+          { name: "Curl con barra Z", sets: "3x12", desc: "Control en la bajada" }
+        ],
+        tips: "Alterna días de tren superior e inferior. Prioriza compuestos sobre aislados."
+      },
+      {
+        id: 5,
+        name: "Fuerza Funcional",
+        level: "principiante",
+        duration: "40 min",
+        description: "Desarrolla fuerza práctica para la vida diaria. Enfoque en movimientos naturales.",
+        exercises: [
+          { name: "Sentadilla goblet", sets: "3x12", desc: "Con kettlebell o mancuerna" },
+          { name: "Flexiones", sets: "3x15", desc: "Progresa a variaciones más difíciles" },
+          { name: "Peso muerto rumano", sets: "3x10", desc: "Enfoca cadena posterior" },
+          { name: "Farmers walk", sets: "3x30m", desc: "Carga pesada, postura erguida" },
+          { name: "Mountain climbers", sets: "3x20", desc: "Mantén caderas bajas" }
+        ],
+        tips: "Perfecto para mejorar movilidad y fuerza base. Ideal 3 veces por semana."
+      },
+      {
+        id: 6,
+        name: "Arnold Split",
+        level: "avanzado",
+        duration: "80 min",
+        description: "Rutina inspirada en Arnold Schwarzenegger. Alto volumen, máxima intensidad.",
+        exercises: [
+          { name: "Press de banca", sets: "5x8-12", desc: "Pirámide de peso" },
+          { name: "Press inclinado", sets: "4x10", desc: "Ángulo 30-45 grados" },
+          { name: "Aperturas con mancuernas", sets: "4x12", desc: "Estiramiento completo" },
+          { name: "Pullover", sets: "3x15", desc: "Expande caja torácica" },
+          { name: "Fondos lastrados", sets: "3xfallo", desc: "Hasta no poder más" }
+        ],
+        tips: "Volumen extremo. Asegura alimentación y recuperación óptimas. No para principiantes."
+      }
+    ];
+
+    // Variables del temporizador
+    let timerInterval = null;
+    let timerSeconds = 0;
+    let timerRunning = false;
+
+    // Elementos DOM
+    const sections = document.querySelectorAll('section');
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const quickAccessButtons = document.querySelectorAll('.quick-access button');
+    const routineList = document.getElementById('routineList');
+    const routineDetails = document.getElementById('routineDetails');
+    const routineContent = document.getElementById('routineContent');
+    const backToRoutines = document.getElementById('backToRoutines');
+    const filterLevel = document.getElementById('filterLevel');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const startTimer = document.getElementById('startTimer');
+    const pauseTimer = document.getElementById('pauseTimer');
+    const resetTimer = document.getElementById('resetTimer');
+
+    // Navegación
+    function showSection(sectionId) {
+      sections.forEach(section => section.classList.remove('active'));
+      navButtons.forEach(btn => btn.classList.remove('active'));
+      
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.classList.add('active');
+      }
+
+      navButtons.forEach(btn => {
+        if (btn.dataset.section === sectionId) {
+          btn.classList.add('active');
+        }
+      });
+
+      // Si vamos a rutinas, mostrar lista y ocultar detalles
+      if (sectionId === 'routines') {
+        routineList.style.display = 'grid';
+        routineDetails.classList.add('hidden');
+      }
+    }
+
+    navButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        showSection(button.dataset.section);
+      });
+    });
+
+    quickAccessButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        showSection(button.dataset.section);
+      });
+    });
+
+    // Renderizar rutinas
+    function renderRoutines(filter = 'todos') {
+      routineList.innerHTML = '';
+      
+      const filteredRoutines = filter === 'todos' 
+        ? routines 
+        : routines.filter(r => r.level === filter);
+
+      filteredRoutines.forEach(routine => {
+        const card = document.createElement('div');
+        card.className = 'routine-card';
+        card.innerHTML = `
+          <span class="level-badge ${routine.level}">${routine.level.toUpperCase()}</span>
+          <h3>${routine.name}</h3>
+          <p>${routine.description}</p>
+          <div class="duration">⏱️ ${routine.duration}</div>
+        `;
+        
+        card.addEventListener('click', () => showRoutineDetail(routine));
+        routineList.appendChild(card);
+      });
+    }
+
+    // Mostrar detalle de rutina
+    function showRoutineDetail(routine) {
+      routineList.style.display = 'none';
+      routineDetails.classList.remove('hidden');
+
+      routineContent.innerHTML = `
+        <h2>${routine.name}</h2>
+        <span class="level-badge ${routine.level}">${routine.level.toUpperCase()}</span>
+        <p style="color: var(--text-muted); margin: 1.5rem 0; font-size: 1.1rem; line-height: 1.7;">${routine.description}</p>
+        <h3 style="color: var(--primary); margin-top: 2.5rem; margin-bottom: 1.5rem; font-size: 1.8rem;">Ejercicios:</h3>
+        ${routine.exercises.map(ex => `
+          <div class="exercise-item">
+            <h4>${ex.name} - ${ex.sets}</h4>
+            <p style="color: var(--text-muted);">${ex.desc}</p>
+          </div>
+        `).join('')}
+        <div class="tip-box">
+          <h4>💡 Consejos del entrenador</h4>
+          <p>${routine.tips}</p>
+        </div>
+      `;
+    }
+
+    // Volver a lista de rutinas
+    backToRoutines.addEventListener('click', () => {
+      routineDetails.classList.add('hidden');
+      routineList.style.display = 'grid';
+    });
+
+    // Filtrar rutinas
+    filterLevel.addEventListener('change', (e) => {
+      renderRoutines(e.target.value);
+    });
+
+    // Calcular IMC
+    document.getElementById('calcBmi').addEventListener('click', () => {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+      const resultDiv = document.getElementById('bmiResult');
+
+      if (!weight || !height || weight <= 0 || height <= 0) {
+        resultDiv.className = 'hidden';
+        alert('Por favor ingresa valores válidos');
+        return;
+      }
+
+      const heightInMeters = height / 100;
+      const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(1);
+
+      let category, color, recommendation;
+
+      if (bmi < 18.5) {
+        category = 'Bajo peso';
+        color = '#3b82f6';
+        recommendation = 'Considera aumentar tu ingesta calórica y consulta con un nutricionista.';
+      } else if (bmi < 25) {
+        category = 'Peso normal';
+        color = '#22c55e';
+        recommendation = '¡Excelente! Mantén tu estilo de vida saludable con ejercicio regular.';
+      } else if (bmi < 30) {
+        category = 'Sobrepeso';
+        color = '#FF9F66';
+        recommendation = 'Considera ajustar tu alimentación y aumentar tu actividad física diaria.';
+      } else {
+        category = 'Obesidad';
+        color = '#FF6B35';
+        recommendation = 'Te recomendamos consultar con un profesional de la salud para un plan personalizado.';
+      }
+
+      resultDiv.className = '';
+      resultDiv.innerHTML = `
+        <h3 style="color: var(--primary); margin-bottom: 1.5rem; font-size: 1.5rem;">Tu Resultado</h3>
+        <div class="bmi-value" style="color: ${color};">${bmi}</div>
+        <div class="bmi-category" style="color: ${color};">${category}</div>
+        <div class="bmi-recommendation">${recommendation}</div>
+        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid rgba(255, 107, 53, 0.2);">
+          <h4 style="color: var(--primary); margin-bottom: 1rem; font-weight: 700;">Rangos de IMC:</h4>
+          <ul style="color: var(--text-muted); line-height: 2.2; list-style: none; padding-left: 1rem;">
+            <li>• Bajo peso: < 18.5</li>
+            <li>• Normal: 18.5 - 24.9</li>
+            <li>• Sobrepeso: 25 - 29.9</li>
+            <li>• Obesidad: ≥ 30</li>
+          </ul>
+        </div>
+      `;
+    });
+
+    // Temporizador
+    function updateTimerDisplay() {
+      const minutes = Math.floor(timerSeconds / 60);
+      const seconds = timerSeconds % 60;
+      timerDisplay.textContent = 
+        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function startTimerFunc() {
+      if (!timerRunning) {
+        timerRunning = true;
+        timerInterval = setInterval(() => {
+          timerSeconds++;
+          updateTimerDisplay();
+        }, 1000);
+      }
+    }
+
+    function pauseTimerFunc() {
+      if (timerRunning) {
+        timerRunning = false;
+        clearInterval(timerInterval);
+      }
+    }
+
+    function resetTimerFunc() {
+      timerRunning = false;
+      clearInterval(timerInterval);
+      timerSeconds = 0;
+      updateTimerDisplay();
+    }
+
+    startTimer.addEventListener('click', startTimerFunc);
+    pauseTimer.addEventListener('click', pauseTimerFunc);
+    resetTimer.addEventListener('click', resetTimerFunc);
+
+    // Inicializar
+    renderRoutines();
+  </script>
 </body>
 </html>
